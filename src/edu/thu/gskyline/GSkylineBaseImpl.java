@@ -56,9 +56,12 @@ public class GSkylineBaseImpl implements GSkylineService {
             return true;
         }).collect(Collectors.toList());
 
+        List<Set<DataPoint>> toBeComparedSets = new LinkedList<>(prunedSets);
+        toBeComparedSets.addAll(result);
+
         for (Set<DataPoint> set1 : prunedSets) {
             boolean survived = true;
-            for (Set<DataPoint> set2 : prunedSets) {
+            for (Set<DataPoint> set2 : toBeComparedSets) {
                 if (set1 == set2) continue;
 
                 DataPoint[] arr1 = set1.toArray(new DataPoint[set1.size()]);
