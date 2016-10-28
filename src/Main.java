@@ -36,7 +36,6 @@ public class Main {
         dataset.dimension = Integer.valueOf(m.group(2));
         dataset.points = new ArrayList<>();
 
-        final int[] idx = {1};
         try (Stream<String> stream = Files.lines(file.toPath())) {
             stream.forEach(line -> {
                 String[] fields = line.split(" ");
@@ -44,7 +43,6 @@ public class Main {
                     throw new RuntimeException("Dataset is broken, dimension mismatch");
                 }
                 DataPoint datapoint = new DataPoint();
-                datapoint.idx = idx[0]++;
                 datapoint.data = Arrays.stream(fields).mapToDouble(Double::valueOf).toArray();
                 dataset.points.add(datapoint);
             });
@@ -68,6 +66,11 @@ public class Main {
             Dataset dataset = parseDataset(Paths.get(DATASETS_DIR, files[i]).toFile());
             if (dataset == null) {
                 continue;
+            }
+            dataset.sortBy(1);
+            int counter = dataset.points.size();
+            for (DataPoint p : dataset.points) {
+                p.idx = counter--;
             }
 //            if (!"test".equals(dataset.category)) {
 //                continue;

@@ -50,6 +50,7 @@ public class DirectedSkylineGraph {
         for (int i = 1; i < points.size(); i++) {
             DataPoint point = points.get(i);
             if (!layer0.dominate(point)) {
+                point.layerIdx = 0;
                 layer0.points.add(point);
                 layer0.tailPoint = point;
             } else if (layerMax.dominate(point)) {
@@ -60,6 +61,7 @@ public class DirectedSkylineGraph {
                 newLayer.dimension = dataset.dimension;
                 newLayer.points = new LinkedList<>();
                 graph.layers.add(newLayer);
+                point.layerIdx = graph.layers.size() - 1;
                 newLayer.points.add(point);
                 newLayer.tailPoint = point;
                 layerMax = newLayer;
@@ -73,6 +75,7 @@ public class DirectedSkylineGraph {
                     index = -index - 1;
                 }
                 Layer targetLayer = graph.layers.get(index);
+                point.layerIdx = index;
                 targetLayer.points.add(point);
                 targetLayer.tailPoint = point;
             }

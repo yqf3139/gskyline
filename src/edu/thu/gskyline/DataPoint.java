@@ -5,7 +5,8 @@ import java.util.List;
 
 public class DataPoint {
 
-    public int idx;
+    public int idx; // sorted according to dimension 2
+    public int layerIdx;
     public List<DataPoint> parents = new LinkedList<>();
     public List<DataPoint> children = new LinkedList<>();
     public double[] data;

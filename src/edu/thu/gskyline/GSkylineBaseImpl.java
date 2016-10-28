@@ -11,26 +11,12 @@ public class GSkylineBaseImpl implements GSkylineService {
     @Override
     public List<Set<DataPoint>> getGSkyline(DirectedSkylineGraph graph, int k) {
         List<Set<DataPoint>> result = new LinkedList<>();
-
         List<DataPoint> points = new ArrayList<>();
-        for (Layer l : graph.layers) {
-            for (DataPoint p : l.points) {
-                // pre processing from Chap 5
-                if (p.parents.size() > k - 1) {
-                    continue;
-                } else if (p.parents.size() == k - 1) {
-                    HashSet<DataPoint> s = new HashSet<>(p.parents);
-                    s.add(p);
-                    result.add(s);
-                    continue;
-                }
-                points.add(p);
-            }
-        }
+        List<DataPoint> skyline = new ArrayList<>();
 
-        System.out.println("points size : " + points.size());
+        preproccess(graph, k, points, skyline, result);
 
-        if (points.size() > 200)return null;
+        if (points.size() > 200) return null;
 
         int[] tmp = new int[points.size()];
         for (int i = 0; i < tmp.length; i++) {
@@ -76,6 +62,29 @@ public class GSkylineBaseImpl implements GSkylineService {
         }
 
         return result;
+    }
+
+    private void preproccess(
+            DirectedSkylineGraph graph, int k,
+            List<DataPoint> points, List<DataPoint> skyline, List<Set<DataPoint>> result) {
+        for (Layer l : graph.layers) {
+            for (DataPoint p : l.points) {
+                if (p.layerIdx == 0) {
+                    skyline.add(p);
+                }
+                // pre processing from Chap 5
+                if (p.parents.size() > k - 1) {
+                    continue;
+                } else if (p.parents.size() == k - 1) {
+                    HashSet<DataPoint> s = new HashSet<>(p.parents);
+                    s.add(p);
+                    result.add(s);
+                    continue;
+                }
+                points.add(p);
+            }
+        }
+        System.out.println("points size : " + points.size());
     }
 
     private boolean groupDominate(DataPoint[] arr2, DataPoint[] arr1) {
