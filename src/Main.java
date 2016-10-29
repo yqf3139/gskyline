@@ -53,7 +53,50 @@ public class Main {
         return dataset;
     }
 
+
+
     public static void main(String[] args) {
+        //test on dataset
+//        yang_BL();
+        lynn_uwise();
+    }
+
+    public static void lynn_uwise(){
+        GSkylineService gSkyline = new UWise();
+
+        File dirFile = new File(DATASETS_DIR);
+        if (!dirFile.exists() || (!dirFile.isDirectory())) {
+            System.err.println("Cannot find datasets");
+        }
+        String[] files = dirFile.list();
+        for (int i = 0; i < files.length; i++) {
+            //temporarily only test test_2 dataset in the paper
+            if (!files[i].equals("test_2.txt")){
+                continue;
+            }
+            Dataset dataset = parseDataset(Paths.get(DATASETS_DIR, files[i]).toFile());
+            if (dataset == null) {
+                continue;
+            }
+            dataset.sortBy(1);
+            int counter = dataset.points.size();
+            for (DataPoint p : dataset.points) {
+                p.idx = counter--;
+            }
+            System.out.println("===Find: " + files[i]);
+            DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
+            System.out.println("Get layers size : "+graph.layers.size());
+
+            List<Set<DataPoint>> result = gSkyline.getGSkyline(graph, K);
+            // skip if points number > 200, brute force is too slow
+            if (result == null)continue;
+            System.out.println("Get group size : " + result.size());
+//            for (int j = 0; j < result.size(); j++) {
+//                System.out.println(result.get(j));
+//            }
+        }
+    }
+    public static void yang_BL(){
 
         GSkylineService gSkyline = new GSkylineBaseImpl();
 
@@ -89,5 +132,8 @@ public class Main {
 //                System.out.println(result.get(j));
 //            }
         }
+
     }
+
+
 }
