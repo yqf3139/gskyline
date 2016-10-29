@@ -85,7 +85,24 @@ public class DirectedSkylineGraph {
         // build dominance relationships
         buildDominance(graph);
 
+        // build index
+        buildIndex(graph);
+
         return graph;
+    }
+
+    private static void buildIndex(DirectedSkylineGraph graph) {
+        Dataset dataset = new Dataset();
+        dataset.points = new ArrayList<>();
+        for (Layer layer : graph.layers) {
+            dataset.points.addAll(layer.points);
+        }
+        dataset.dimension = graph.layers.get(0).dimension;
+        dataset.sortBy(1);
+        int counter = dataset.points.size();
+        for (DataPoint p : dataset.points) {
+            p.idx = counter--;
+        }
     }
 
     public static void buildDominance(DirectedSkylineGraph graph) {

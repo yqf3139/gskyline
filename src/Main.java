@@ -67,11 +67,6 @@ public class Main {
             if (dataset == null) {
                 continue;
             }
-            dataset.sortBy(1);
-            int counter = dataset.points.size();
-            for (DataPoint p : dataset.points) {
-                p.idx = counter--;
-            }
 //            if (!"test".equals(dataset.category)) {
 //                continue;
 //            }
@@ -79,11 +74,11 @@ public class Main {
                 continue;
             System.out.println("===Find: " + files[i]);
             DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
-            System.out.println("Get layers size : "+graph.layers.size());
+            System.out.println("Get layers size : " + graph.layers.size());
 
             List<Set<DataPoint>> result = gSkyline.getGSkyline(graph, K);
             // skip if points number > 200, brute force is too slow
-            if (result == null)continue;
+            if (result == null) continue;
             System.out.println("Get group size : " + result.size());
 //            for (int j = 0; j < result.size(); j++) {
 //                System.out.println(result.get(j));
