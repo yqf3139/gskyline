@@ -46,7 +46,11 @@ public class GSkylineBaseImpl implements GSkylineService {
         toBeComparedSets.addAll(result);
 
         int cc = 0;
+        float total = prunedSets.size();
         for (Set<DataPoint> set1 : prunedSets) {
+            cc++;
+            if (cc % 1000 == 0)
+                System.out.print("\r" + cc / total);
             boolean survived = true;
             DataPoint[] arr1 = set1.toArray(new DataPoint[set1.size()]);
             DataPoint[] arr2 = new DataPoint[set1.size()];
@@ -54,7 +58,6 @@ public class GSkylineBaseImpl implements GSkylineService {
                 if (set1 == set2) continue;
 
                 arr2 = set2.toArray(arr2);
-
                 if (groupDominate(arr2, arr1)) {
                     survived = false;
                     break;
