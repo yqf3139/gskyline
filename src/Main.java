@@ -1,134 +1,105 @@
 import edu.thu.gskyline.*;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Main {
 
-    private static String DATASETS_DIR = "datasets";
-    private static String RESULTS_DIR = "results";
-    private static Pattern DATASET_NAME_PATTEN = Pattern.compile("(.*)_(\\d+)(.*)");
-    private static final int K = 4;
+    private static Map<String, GSkylineService> serviceMap = new HashMap<>();
 
-    private static Dataset parseDataset(File file) {
-        if (!file.exists() || !file.isFile()) {
-            System.err.println(file.getAbsoluteFile() + "is not a valid file");
-            return null;
-        }
-
-        Matcher m = DATASET_NAME_PATTEN.matcher(file.getName());
-        if (!m.find()) {
-            System.err.println(file.getAbsoluteFile() + "name not valid");
-            return null;
-        }
-
-        Dataset dataset = new Dataset();
-        dataset.category = m.group(1);
-        dataset.dimension = Integer.valueOf(m.group(2));
-        dataset.points = new ArrayList<>();
-
-        try (Stream<String> stream = Files.lines(file.toPath())) {
-            stream.forEach(line -> {
-                String[] fields = line.split(" ");
-                if (fields.length != dataset.dimension) {
-                    throw new RuntimeException("Dataset is broken, dimension mismatch");
-                }
-                DataPoint datapoint = new DataPoint();
-                datapoint.data = Arrays.stream(fields).mapToDouble(Double::valueOf).toArray();
-                dataset.points.add(datapoint);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return dataset;
+    static {
+        serviceMap.put("baseline", new GSkylineBaseImpl());
+        serviceMap.put("pwise", new GSkylineBaseImpl());
+        serviceMap.put("uwise", new UWise());
+        serviceMap.put("uwise+", new GSkylineBaseImpl());
     }
-
-
 
     public static void main(String[] args) {
-        //test on dataset
-//        yang_BL();
-        lynn_uwise();
+
+        testBuildGraph(args);
+        if (true)return;
+
+        if (args.length < 3) {
+            System.out.println("usage: java -jar gskyline.jar method K dataset dir or file ...");
+            System.out.println("method: all baseline pwise uwise uwise+");
+            System.exit(-1);
+        }
+
+        Map<String, GSkylineService> services = null;
+        if ("all".equals(args[0])) {
+            services = serviceMap;
+        } else if (serviceMap.containsKey(args[0])) {
+            services = new HashMap<>();
+            services.put(args[0], serviceMap.get(args[0]));
+        } else {
+            System.err.println("please provide a valid method");
+            System.exit(-2);
+        }
+
+        int k = 4;
+        try {
+            k = Integer.parseInt(args[1]);
+        } catch (Exception ignored) {
+        }
+
+        System.out.println("K: " + k);
+
+        for (int i = 2; i < args.length; i++) {
+            runTestCase(services, k, args[i]);
+        }
     }
 
-    public static void lynn_uwise(){
-        GSkylineService gSkyline = new UWise();
-
-        File dirFile = new File(DATASETS_DIR);
-        if (!dirFile.exists() || (!dirFile.isDirectory())) {
-            System.err.println("Cannot find datasets");
-        }
-        String[] files = dirFile.list();
-        for (int i = 0; i < files.length; i++) {
-            //temporarily only test test_2 dataset in the paper
-            if (!files[i].equals("test_2.txt")){
-                continue;
-            }
-            Dataset dataset = parseDataset(Paths.get(DATASETS_DIR, files[i]).toFile());
+    private static void testBuildGraph(String[] filenames) {
+        System.out.printf("dataset, k, time, layersize\n");
+        for (String filename : filenames) {
+            Dataset dataset = Dataset.parseDataset(new File(filename));
             if (dataset == null) {
-                continue;
+                return;
             }
-            dataset.sortBy(1);
-            int counter = dataset.points.size();
-            for (DataPoint p : dataset.points) {
-                p.idx = counter--;
+            for (int k : new int[]{1, 2, 4, 8, 16, 32, 64}) {
+                long start = System.currentTimeMillis();
+                DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, k);
+                long time = System.currentTimeMillis() - start;
+                System.out.printf("%s, %d, %d, %d\n", filename, k, time, graph.layers.size());
+                graph = null;
+                System.gc();
             }
-            System.out.println("===Find: " + files[i]);
-            DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
-            System.out.println("Get layers size : "+graph.layers.size());
+        }
 
-            List<Set<DataPoint>> result = gSkyline.getGSkyline(graph, K);
-            // skip if points number > 200, brute force is too slow
-            if (result == null)continue;
-            System.out.println("Get group size : " + result.size());
+    }
+
+    private static void runTestCase(Map<String, GSkylineService> services, int K, String filename) {
+        Dataset dataset = Dataset.parseDataset(new File(filename));
+        if (dataset == null) {
+            return;
+        }
+        System.out.println("=== Filename: " + filename + " ===");
+
+        DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
+        System.out.println("Layers size : " + graph.layers.size());
+        for (String name : services.keySet()) {
+            graph = DirectedSkylineGraph.createFrom(dataset, K);
+
+            int groupSize = 0;
+            long timeElapsed = 0;
+            long start = System.currentTimeMillis();
+            List<Set<DataPoint>> result = services.get(name).getGSkyline(graph, K);
+            timeElapsed = System.currentTimeMillis() - start;
+
+            // skip if points number > 100, brute force is too slow
+            if (result != null) {
+                groupSize = result.size();
+            }
+            System.out.println(String.format("> %s Group size : %d, Time: %d", name, groupSize, timeElapsed));
 //            for (int j = 0; j < result.size(); j++) {
 //                System.out.println(result.get(j));
 //            }
         }
-    }
-    public static void yang_BL(){
-
-        GSkylineService gSkyline = new GSkylineBaseImpl();
-
-        File dirFile = new File(DATASETS_DIR);
-        if (!dirFile.exists() || (!dirFile.isDirectory())) {
-            System.err.println("Cannot find datasets");
-        }
-        String[] files = dirFile.list();
-        for (int i = 0; i < files.length; i++) {
-            Dataset dataset = parseDataset(Paths.get(DATASETS_DIR, files[i]).toFile());
-            if (dataset == null) {
-                continue;
-            }
-//            if (!"test".equals(dataset.category)) {
-//                continue;
-//            }
-            if (2 != dataset.dimension)
-                continue;
-            System.out.println("===Find: " + files[i]);
-            DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
-            System.out.println("Get layers size : " + graph.layers.size());
-
-            List<Set<DataPoint>> result = gSkyline.getGSkyline(graph, K);
-            // skip if points number > 200, brute force is too slow
-            if (result == null) continue;
-            System.out.println("Get group size : " + result.size());
-//            for (int j = 0; j < result.size(); j++) {
-//                System.out.println(result.get(j));
-//            }
-        }
 
     }
-
 
 }

@@ -1,0 +1,12 @@
+<project default="compile">
+    <target name="compile">
+        <javac srcdir="src" destdir="build" classpath="build/classes"/>
+        <jar destfile="gskyline.jar"
+             basedir="build"
+             includes="**/**.class">
+            <manifest>
+                <attribute name = "Main-Class" value = "Main"/>
+            </manifest>
+        </jar>
+    </target>
+</project>

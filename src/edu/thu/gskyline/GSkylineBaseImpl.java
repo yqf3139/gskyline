@@ -16,7 +16,7 @@ public class GSkylineBaseImpl implements GSkylineService {
 
         preproccess(graph, k, points, skyline, result);
 
-        if (points.size() > 200) return null;
+        if (points.size() > 50) return null;
 
         int[] tmp = new int[points.size()];
         for (int i = 0; i < tmp.length; i++) {
