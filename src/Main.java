@@ -13,16 +13,14 @@ public class Main {
 
     static {
         serviceMap.put("baseline", new GSkylineBaseImpl());
-        serviceMap.put("pwise", new GSkylineBaseImpl());
+        serviceMap.put("pwise", new GSkylinePointWiseImpl());
         serviceMap.put("uwise", new UWise());
         serviceMap.put("uwise+", new GSkylineBaseImpl());
     }
 
     public static void main(String[] args) {
-
-        testBuildGraph(args);
-        if (true)return;
-
+        // testBuildGraph(args);
+        // if (true)return;
         if (args.length < 3) {
             System.out.println("usage: java -jar gskyline.jar method K dataset dir or file ...");
             System.out.println("method: all baseline pwise uwise uwise+");
@@ -56,16 +54,15 @@ public class Main {
     private static void testBuildGraph(String[] filenames) {
         System.out.printf("dataset, k, time, layersize\n");
         for (String filename : filenames) {
-            Dataset dataset = Dataset.parseDataset(new File(filename));
-            if (dataset == null) {
-                return;
-            }
-            for (int k : new int[]{1, 2, 4, 8, 16, 32, 64}) {
+            for (int k : new int[]{Integer.MAX_VALUE}) {
+                Dataset dataset = Dataset.parseDataset(new File(filename));
+                if (dataset == null) {
+                    return;
+                }
                 long start = System.currentTimeMillis();
                 DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, k);
                 long time = System.currentTimeMillis() - start;
                 System.out.printf("%s, %d, %d, %d\n", filename, k, time, graph.layers.size());
-                graph = null;
                 System.gc();
             }
         }
@@ -82,6 +79,7 @@ public class Main {
         DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
         System.out.println("Layers size : " + graph.layers.size());
         for (String name : services.keySet()) {
+            dataset = Dataset.parseDataset(new File(filename));
             graph = DirectedSkylineGraph.createFrom(dataset, K);
 
             int groupSize = 0;
@@ -95,9 +93,9 @@ public class Main {
                 groupSize = result.size();
             }
             System.out.println(String.format("> %s Group size : %d, Time: %d", name, groupSize, timeElapsed));
-//            for (int j = 0; j < result.size(); j++) {
-//                System.out.println(result.get(j));
-//            }
+            for (int j = 0; j < result.size(); j++) {
+                System.out.println(result.get(j));
+            }
         }
 
     }

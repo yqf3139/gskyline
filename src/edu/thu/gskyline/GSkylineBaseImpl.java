@@ -16,7 +16,7 @@ public class GSkylineBaseImpl implements GSkylineService {
 
         preproccess(graph, k, points, skyline, result);
 
-        if (points.size() > 50) return null;
+        if (points.size() > 100) return null;
 
         int[] tmp = new int[points.size()];
         for (int i = 0; i < tmp.length; i++) {
@@ -49,8 +49,6 @@ public class GSkylineBaseImpl implements GSkylineService {
         float total = prunedSets.size();
         for (Set<DataPoint> set1 : prunedSets) {
             cc++;
-            if (cc % 1000 == 0)
-                System.out.print("\r" + cc / total);
             boolean survived = true;
             DataPoint[] arr1 = set1.toArray(new DataPoint[set1.size()]);
             DataPoint[] arr2 = new DataPoint[set1.size()];
