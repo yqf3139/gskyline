@@ -62,7 +62,7 @@ public class Main {
     }
 
     public static void lynn_uwise(){
-        GSkylineService gSkyline = new UWise();
+        GSkylineService gSkyline = new UWisePlus();
 
         File dirFile = new File(DATASETS_DIR);
         if (!dirFile.exists() || (!dirFile.isDirectory())) {

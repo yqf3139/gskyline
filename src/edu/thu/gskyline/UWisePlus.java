@@ -5,13 +5,13 @@ import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
- * Created by lynn on 2016/10/29.
+ * Created by lynn on 2016/10/30.
  */
 //class UnitGroup{
 //    DataPoint point;
 //    Set<DataPoint> unitGroup;
 //}
-public class UWise implements GSkylineService {
+public class UWisePlus implements GSkylineService {
     // use brute force & Theorem 2
     @Override
     public List<Set<DataPoint>> getGSkyline(DirectedSkylineGraph graph, int k) {
@@ -22,11 +22,19 @@ public class UWise implements GSkylineService {
 
         preproccess(graph, k, points, skyline, result);
         //build 1-unit group as candidate groups following reverse order of point index
-//        unit_group_reordering();
+        List<DataPoint> reversePoints=get_reverse_points(points);
         //for each candidate group G in 1-unit groups do
         List<Set<DataPoint>>  candidateGroups=new LinkedList<>();
-
-        for (DataPoint p :points ){
+        for (DataPoint p :reversePoints ){//dif from uwise:reverse-order iterator
+            //subset pruning
+            int gLast=get_last_deepest_candidate_group(p,points);
+            if(gLast<k){
+                continue;
+            }else if (gLast==k){
+                Set<DataPoint> candidate=new HashSet<>();candidate.add(p);
+                result.add(get_union_unit_group(candidate));
+                continue;
+            }
             HashSet<DataPoint> s = new HashSet<>();s.add(p);
             candidateGroups.add(s);
 //            int i=2;
@@ -40,7 +48,7 @@ public class UWise implements GSkylineService {
                     }else if(union.size()>k){//super set pruning
                         continue;
                     }else{
-                        List<DataPoint> tailset=get_tail_Set(candidate,points);//tail set pruning
+                        List<DataPoint> tailset=get_tail_Set(candidate,reversePoints);//tail set pruning
                         for (DataPoint tailPoint : tailset){
                             HashSet<DataPoint> newCandidate=new HashSet<>(candidate);
                             newCandidate.add(tailPoint);
@@ -55,6 +63,17 @@ public class UWise implements GSkylineService {
 
         return result;
     }
+
+    private List<DataPoint> get_reverse_points(List<DataPoint> points){//unit group reordering
+        List<DataPoint> reversePoints=new ArrayList<DataPoint>();
+        for (int i=points.size()-1;i>=0;i--){
+            reversePoints.add(points.get(i));
+        }
+        return  reversePoints;
+    }
+    private int get_last_deepest_candidate_group(DataPoint point,List<DataPoint> points){
+        return points.indexOf(point)+1;
+    }
     private HashSet<DataPoint> get_union_unit_group(Set<DataPoint> candidate){
         HashSet<DataPoint> union=new HashSet<>();
         for(DataPoint p:candidate){
@@ -64,15 +83,6 @@ public class UWise implements GSkylineService {
         }
         return union;
     }
-//    private boolean isEmpty_candidate_group_at_i(List<Set<DataPoint>> candidateGroups,int i){
-//        int counter=0;
-//        for(Set<DataPoint> s:candidateGroups){
-//            if (s.size()==i){
-//                counter++;
-//            }
-//        }
-//        return counter==0;
-//    }
 
     private List<DataPoint> get_unit_group(DataPoint p){
         List<DataPoint> unitGroup=new ArrayList<DataPoint>(p.parents);
@@ -89,7 +99,7 @@ public class UWise implements GSkylineService {
             if(idx>maxIdx){
                 maxIdx=idx;
             }
-            children.addAll(p.children);
+            children.addAll(p.parents);//for reverse order
         }
         for (int i=maxIdx+1;i<points.size();i++){
             if (!(children.contains(points.get(i)))){
