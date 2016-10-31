@@ -16,17 +16,17 @@ public class GSkylineBaseImpl implements GSkylineService {
 
         preproccess(graph, k, points, skyline, result);
 
-        if (points.size() > 100) return null;
+        // brute force method is too slow for such input
+        if (points.size() > 80) return null;
 
         int[] tmp = new int[points.size()];
         for (int i = 0; i < tmp.length; i++) {
             tmp[i] = i;
         }
-
         // get all the C-n-k combinations
         List<int[]> res = combine(tmp, tmp.length, k);
 
-        System.out.println("combination res size : " + res.size());
+        // turn combinations into point sets and filter out impossible points
         List<Set<DataPoint>> prunedSets = res.stream().map(combination -> {
             Set<DataPoint> pointSet = new HashSet<>();
             for (int i = 0; i < combination.length; i++) {
@@ -45,10 +45,8 @@ public class GSkylineBaseImpl implements GSkylineService {
         List<Set<DataPoint>> toBeComparedSets = new LinkedList<>(prunedSets);
         toBeComparedSets.addAll(result);
 
-        int cc = 0;
-        float total = prunedSets.size();
+        // compare set to all possible answer sets
         for (Set<DataPoint> set1 : prunedSets) {
-            cc++;
             boolean survived = true;
             DataPoint[] arr1 = set1.toArray(new DataPoint[set1.size()]);
             DataPoint[] arr2 = new DataPoint[set1.size()];
@@ -63,11 +61,10 @@ public class GSkylineBaseImpl implements GSkylineService {
             }
             if (survived) result.add(set1);
         }
-
         return result;
     }
 
-    private void preproccess(
+    protected void preproccess(
             DirectedSkylineGraph graph, int k,
             List<DataPoint> points, List<DataPoint> skyline, List<Set<DataPoint>> result) {
         for (Layer l : graph.layers) {
@@ -87,10 +84,9 @@ public class GSkylineBaseImpl implements GSkylineService {
                 points.add(p);
             }
         }
-        System.out.println("points size : " + points.size());
     }
 
-    private boolean groupDominate(DataPoint[] arr2, DataPoint[] arr1) {
+    protected boolean groupDominate(DataPoint[] arr2, DataPoint[] arr1) {
         List<Integer> indexs = new LinkedList<>();
         for (int i = 0; i < arr1.length; i++) {
             indexs.add(i);
@@ -129,37 +125,3 @@ public class GSkylineBaseImpl implements GSkylineService {
 
 }
 
-// from the web
-class Combinations {
-
-    private static List<int[]> arrays;
-
-    public static List<int[]> combine(int a[], int n, int m) {
-        arrays = new LinkedList<>();
-        //p[x]=y 取到的第x个元素，是a中的第y个元素
-        int index;
-        int[] p = new int[m];
-
-        index = 0;
-        p[index] = 0;//取第一个元素
-        while (true) {
-            if (p[index] >= n) {//取到底了，回退
-                if (index == 0) {//各种情况取完了，不能再回退了
-                    break;
-                }
-                index--;//回退到前一个
-                p[index]++;//替换元素
-            } else if (index == m - 1) {//取够了，输出
-                int[] tmp = new int[p.length];
-                System.arraycopy(p, 0, tmp, 0, p.length);
-                arrays.add(tmp);
-                p[index]++; //替换元素
-            } else {//多取一个元素
-                index++;
-                p[index] = p[index - 1] + 1;
-            }
-        }
-        return arrays;
-    }
-
-}

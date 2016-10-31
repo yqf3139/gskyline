@@ -13,7 +13,8 @@ if __name__ == '__main__':
     dataset = pandas.read_json(json.dumps(colums))
     # pd = dataset.fillna(dataset.mean())
     pd = dataset.interpolate()
+    pd = -pd
     print(pd)
     outfile = open('nba_{}.txt'.format(len(pd.columns)), 'w')
     outfile.write(pd.to_csv(header=False, index=False, sep=' '))
-    outfile.close
+    outfile.close()

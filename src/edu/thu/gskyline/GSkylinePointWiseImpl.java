@@ -3,12 +3,24 @@ package edu.thu.gskyline;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static edu.thu.gskyline.Combinations.combine;
+class PDataNode {
+    Dataset gkl;
+    Dataset tailset;
+}
 
 public class GSkylinePointWiseImpl implements GSkylineService {
 
+    @Override
+    public List<Set<DataPoint>> getGSkyline(DirectedSkylineGraph graph, int k) {
+        List<PDataNode> res = getGSkylineP(graph, k);
+        List<Set<DataPoint>> ans = res.stream()
+                .map(node -> new HashSet<>(node.gkl.points)).
+                        collect(Collectors.toCollection(LinkedList::new));
+        return ans;
+    }
+
     //pwise
-    public List<PDataNode> getGSkylineP(DirectedSkylineGraph graph, int k) {
+    private List<PDataNode> getGSkylineP(DirectedSkylineGraph graph, int k) {
         PDataNode root = new PDataNode();
         root.tailset = new Dataset();
         root.tailset.points = new ArrayList<>();
@@ -169,12 +181,4 @@ public class GSkylinePointWiseImpl implements GSkylineService {
         return tepGkl;
     }
 
-    @Override
-    public List<Set<DataPoint>> getGSkyline(DirectedSkylineGraph graph, int k) {
-        List<PDataNode> res = getGSkylineP(graph, k);
-        List<Set<DataPoint>> ans = res.stream()
-                .map(node -> new HashSet<>(node.gkl.points)).
-                collect(Collectors.toCollection(LinkedList::new));
-        return ans;
-    }
 }

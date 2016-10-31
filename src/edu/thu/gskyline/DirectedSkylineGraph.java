@@ -2,25 +2,6 @@ package edu.thu.gskyline;
 
 import java.util.*;
 
-class Layer {
-    int dimension;
-    List<DataPoint> points;
-    DataPoint tailPoint;
-
-    boolean dominate(DataPoint other) {
-        if (dimension == 2) {
-            return tailPoint.dominate(other);
-        } else {
-            for (DataPoint point : points) {
-                if (point.dominate(other)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-}
-
 public class DirectedSkylineGraph {
 
     public List<Layer> layers;
@@ -85,13 +66,13 @@ public class DirectedSkylineGraph {
         // build dominance relationships
         buildDominance(graph);
 
-        // build index
+        // build index by second dimension
         buildIndex(graph);
 
         return graph;
     }
 
-    private static void buildIndex(DirectedSkylineGraph graph) {
+    public static void buildIndex(DirectedSkylineGraph graph) {
         Dataset dataset = new Dataset();
         dataset.points = new ArrayList<>();
         for (Layer layer : graph.layers) {

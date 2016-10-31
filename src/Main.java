@@ -1,11 +1,7 @@
 import edu.thu.gskyline.*;
 
 import java.io.File;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -15,7 +11,7 @@ public class Main {
         serviceMap.put("baseline", new GSkylineBaseImpl());
         serviceMap.put("pwise", new GSkylinePointWiseImpl());
         serviceMap.put("uwise", new UWise());
-        serviceMap.put("uwise+", new GSkylineBaseImpl());
+        serviceMap.put("uwise+", new UWisePlus());
     }
 
     public static void main(String[] args) {
@@ -44,8 +40,7 @@ public class Main {
         } catch (Exception ignored) {
         }
 
-        System.out.println("K: " + k);
-
+        System.out.println("Using K: " + k);
         for (int i = 2; i < args.length; i++) {
             runTestCase(services, k, args[i]);
         }
@@ -63,7 +58,6 @@ public class Main {
                 DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, k);
                 long time = System.currentTimeMillis() - start;
                 System.out.printf("%s, %d, %d, %d\n", filename, k, time, graph.layers.size());
-                System.gc();
             }
         }
 
@@ -78,6 +72,8 @@ public class Main {
 
         DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
         System.out.println("Layers size : " + graph.layers.size());
+
+//        List<int[]> ans = new LinkedList<>();
         for (String name : services.keySet()) {
             dataset = Dataset.parseDataset(new File(filename));
             graph = DirectedSkylineGraph.createFrom(dataset, K);
@@ -88,15 +84,36 @@ public class Main {
             List<Set<DataPoint>> result = services.get(name).getGSkyline(graph, K);
             timeElapsed = System.currentTimeMillis() - start;
 
-            // skip if points number > 100, brute force is too slow
+            // skip baseline if points number > 100, brute force is too slow
             if (result != null) {
                 groupSize = result.size();
+            } else {
+                continue;
             }
             System.out.println(String.format("> %s Group size : %d, Time: %d", name, groupSize, timeElapsed));
-            for (int j = 0; j < result.size(); j++) {
-                System.out.println(result.get(j));
-            }
+
+//            int[] a = new int[result.size()];
+//            for (int j = 0; j < result.size(); j++) {
+//                System.out.println(result.get(j));
+//                a[j] = result.get(j).stream().map(dataPoint -> dataPoint.idx).reduce((i1, i2) -> i1 + i2).get();
+//            }
+//            Arrays.sort(a);
+//            ans.add(a);
         }
+//         int[] ans1 = ans.get(0);
+//         for (int i = 1; i < ans.size(); i++) {
+//             boolean eq = true;
+//             int[] ans2 = ans.get(i);
+//             for (int j = 0; j < ans1.length; j++) {
+//                 if (ans1[j] != ans2[j]) {
+//                     eq = false;
+//                     break;
+//                 }
+//             }
+//             if (!eq) {
+//                 System.out.println(i + " not eq");
+//             }
+//         }
 
     }
 
