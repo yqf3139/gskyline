@@ -85,11 +85,11 @@ public class UWise extends GSkylineBaseImpl{
             if(idx>maxIdx){
                 maxIdx=idx;
             }
-            children.addAll(p.children);
+            children.addAll(p.children);//find all children points
         }
         for (int i=maxIdx+1;i<points.size();i++){
             if (!(children.contains(points.get(i)))){
-                tailSet.add(points.get(i));
+                tailSet.add(points.get(i));//remove it from tailset if it is in childrenset
             }
         }
         return tailSet;
