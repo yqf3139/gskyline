@@ -1,4 +1,4 @@
-##Unit group wise algorithm - UWise
+##The Unit Group-Wise Algorithm - UWise
 PWise算法以点为单位扩充叶节点，但是由于G-Skyline group中的一个点不能被其他group中的点dominate，所以也就是说某个节点的unit group(点及它的父亲节点)一定也在同一个group中；所以得到UWise算法，即以unit group为单位扩充叶节点。
 
 为了提高效率，有两个剪枝的过程：
@@ -39,7 +39,7 @@ PWise算法以点为单位扩充叶节点，但是由于G-Skyline group中的一
         return tailSet;
     }
 ```
-##Unit group wise algorithm - UWise+
+##The Unit Group-Wise Algorithm - UWise+
 UWise+在UWise基础上增加两个新的剪枝方法：
 > 1. Unit Group Reordering
 > 2. Subset pruning
