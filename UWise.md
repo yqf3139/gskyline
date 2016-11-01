@@ -63,8 +63,8 @@ UWise+在UWise基础上增加两个新的剪枝方法：
     if(gLast<k){
         continue;
     }else if (gLast==k){
-        Set<DataPoint> candidate=new HashSet<>();candidate.add(p);
-        result.add(get_union_unit_group(candidate));
+        Set<DataPoint> candidate=new HashSet<>(points.subList(0,points.indexOf(p)+1));
+        result.add(candidate);
         continue;
     }
 ```
