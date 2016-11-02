@@ -17,9 +17,8 @@ public class GSkylineBaseImpl implements GSkylineService {
         long start = System.currentTimeMillis();
         preproccess(graph, k, points, skyline, result);
         long end = System.currentTimeMillis();
-        System.out.printf("%d,%d\n", k, end - start);
+//        System.out.printf("%d,%d\n", k, end - start);
 
-        if (true) return null;
         // brute force method is too slow for such input
         if (points.size() > 80) return null;
 

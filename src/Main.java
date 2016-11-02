@@ -68,13 +68,10 @@ public class Main {
         if (dataset == null) {
             return;
         }
-//        System.out.println("=== Filename: " + filename + " ===");
-        System.out.print(filename + ",");
+        System.out.println("Filename: " + filename);
 
-        DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
-//        System.out.println("Layers size : " + graph.layers.size());
+        DirectedSkylineGraph graph = null;
 
-//        List<int[]> ans = new LinkedList<>();
         for (String name : services.keySet()) {
             dataset = Dataset.parseDataset(new File(filename));
             graph = DirectedSkylineGraph.createFrom(dataset, K);
@@ -92,29 +89,7 @@ public class Main {
                 continue;
             }
             System.out.println(String.format("> %s Group size : %d, Time: %d", name, groupSize, timeElapsed));
-
-//            int[] a = new int[result.size()];
-//            for (int j = 0; j < result.size(); j++) {
-//                System.out.println(result.get(j));
-//                a[j] = result.get(j).stream().map(dataPoint -> dataPoint.idx).reduce((i1, i2) -> i1 + i2).get();
-//            }
-//            Arrays.sort(a);
-//            ans.add(a);
         }
-//         int[] ans1 = ans.get(0);
-//         for (int i = 1; i < ans.size(); i++) {
-//             boolean eq = true;
-//             int[] ans2 = ans.get(i);
-//             for (int j = 0; j < ans1.length; j++) {
-//                 if (ans1[j] != ans2[j]) {
-//                     eq = false;
-//                     break;
-//                 }
-//             }
-//             if (!eq) {
-//                 System.out.println(i + " not eq");
-//             }
-//         }
 
     }
 

@@ -11,23 +11,105 @@
 \maketitle
 \begin{CJK}{UTF8}{gbsn}  
 
-\section{问题描述}
+本次实验，我们对论文中提出的暴力法、Pwise、Uwise和Uwise+分别实现，并在给定的12个数据集以及NBA真实数据集上实验比较了不同算法的特点与优劣；接下来，我们将首先针对本次实验中出现的问题，交流优化和改进意见。
 
 \section{算法描述}
 
-Finding Pareto Optimal Groups: Group-based Skyline
+\subsection{构建DSG}
+DSG将多维点的集合按层存储，首层为skyline，第二层为次skyline，依次类推；DSG中中，点的parent为所有可以Dominate该点的集合，点的children为所有被改点Dominate的点集合。\\
+程序实现：输入多维点的集合和层数k，输出一个k层的DSG。$DirectedSkylineGraph$类实现了从一个Dataset和k构建DSG的静态方法。\\
+\textbf{构建DSG}\\
+首先将点集合按照第1维升序排序。对每一个点，分三种情况考虑。1.如果它不能被目前DSG的首层Dominate，那么它加入首层；2.如果它被最后一层Dominate并且DSG未达到k层，那么使用它来创建新的最后一层加入DSG中，如果此时的DSG已经达到k层，那么直接丢弃这个点；3.如果以上条件均不满足，则说明存在层i和其前一层i-1，层i不可以Dominate该点而层i-i可以，则点应该加入层i。\\
+\textbf{Dominate关系} 目前所有点的parent和children关系比较简单，在如上描述构建好的DSG中，对每一层的每个点，遍历其上层所有的节点，如果它被上层节点压制了，则相互添加Dominate关系。\\
+\textbf{点的Index}
+对于最终保留在DSG中的点，按照第二维降序排列并赋予Index。
+\subsection{Baseline与预处理}
 
-\subsection{Baseline}
-
+Baseline为枚举法进行G-Skyline groups的求解。将DSG中的点所有集合长度为k的组合枚举出来后，过滤出不被其他组Dominate的组即为最终答案。\\
+可以使用作者提出的预处理方法过滤点集合，预处理对baseline和后续算法均有效。如果某一点，其parent长度为k-1，则该点与其parent的集合为一个有效解；如果parent的长度大于k-1，则可不考虑该点；其余的点继续求解。
 
 \subsection{Point-Wise}
 在枚举树法进行G-Skyline groups的求解过程中，会产生庞大的时间与空间开销，于是论文中提出基于扩增点的方法进行树构建以及动态剪枝，最大程度地去掉冗余的部分，提高算法的效率，节省了计算过程的时间和空间。初始化树的第0层有一个根节点为空，tail set是预处理后得到的Directed skyline graph前k层的所有数据，然后从tail set中选取合适的点加入group中，第一层是加入1个点后所有满足条件的groups集合，第二层继续增加一个合适点，第3层，第4层以此类推，层数对应当层groups列表中每个group的元素个数。其中的剪枝优化主要有以下两个方面：\\
 \textbf{子树修剪}
-应用超集单调性这一性质，如果一个包含i个元素的集合Gi不是G-Skyline group，即使从其tail set中新增加一个点，组成的新的包含i+1个元素的集合Gi+1也不可能是G-Skyline group。所以在算法中，每从一个tail set中添加完一个合适的元素到原group得到的新group都要进行G-Skyline的判定，若新生成的group不是G-Skyline group，直接删除该节点，相当于直接去掉了一个以该节点为根节点的子树。\\
+应用超集单调性这一性质，如果一个包含i个元素的集合$G_{i}$不是G-Skyline group，即使从其tail set中新增加一个点，组成的新的包含i+1个元素的集合$G_{i+1}$也不可能是G-Skyline group。所以在算法中，每从一个tail set中添加完一个合适的元素到原group得到的新group都要进行G-Skyline的判定，若新生成的group不是G-Skyline group，直接删除该节点，相当于直接去掉了一个以该节点为根节点的子树。\\
 \textbf{Tail Set修剪}
 根据文中引理G-Skyline group里面的点不能被除此group里面的元素以外的点所控制，即G-skyline group里每个元素只能是无父节点，或所有父节点在此group内。但这一步骤并不充分，若成功组成新group之后，得再次验证确保准确性。还有一个就是新加入的点必须保证在Directed Skyline Graph的前i+1层，若加入了大于等于i+2层以上的点，那么该点会被Gi以外的点所控制，不满足G-Skyline group定义。\\
-其实，实现这个算法之后总结起来就是，每新加入的一个点首先是得在Gi的上一个加入的点对应的Directed Skyline Graph同一层找skyline点（即该层下标较大点），若已没有skyline点则向下一层i+1层寻找被Gi中元素控制的孩子即可。然后再循环建树的下一层，直到建完第k层截止，便可得到所有的满足条件的G-Skyline groups。\\
+其实，实现这个算法之后总结起来就是，每新加入的一个点首先是得在$G_{i}$的上一个加入的点对应的Directed Skyline Graph同一层找skyline点（即该层下标较大点），若已没有skyline点则向下一层i+1层寻找被$G_{i}$中元素控制的孩子即可。然后再循环建树的下一层，直到建完第k层截止，便可得到所有的满足条件的G-Skyline groups。\\
 本算法按照论文中的伪码实现的，在实现过程中丰富了其中的细节，助教可查看源码，它实现了自GSkylineService接口。同时也在项目中定义了树节点PDataNode，方便计算。
+
+\subsection{Group-Wise}
+PWise算法以点为单位扩充叶节点，但是由于G-Skyline group中的一个点不能被其他group中的点dominate，所以也就是说某个节点的unit group(点及它的父亲节点)一定也在同一个group中；所以得到UWise算法，即以unit group为单位扩充叶节点。\\
+为了提高效率，有两个剪枝的过程：Superset pruning和Tailset pruning。
+
+\subsubsection{Superset pruning}
+\textbf{去掉点个数超过k的candidate group，不再计算它的子树}
+\begin{lstlisting}[language=C]
+HashSet<DataPoint> union=get_union_unit_group(candidate);
+if(union.size()==k){//get one result
+    result.add(union);
+    continue;
+}else if(union.size()>k){//superset pruning
+    continue;
+}
+\end{lstlisting}
+
+\subsubsection{Tailset pruning}
+\textbf{当前unit groups中的点的子节点，不再加入tailset}
+\begin{lstlisting}[language=C]
+private List<DataPoint> get_tail_Set(
+    Set<DataPoint> set, List<DataPoint> points){
+
+    List<DataPoint> tailSet=new ArrayList<>();
+    HashSet<DataPoint> children=new HashSet<>();
+    int maxIdx=-1;
+    for (DataPoint p:set){
+        int idx=points.indexOf(p);
+        if(idx>maxIdx){
+            maxIdx=idx;
+        }
+        //find all children points
+        children.addAll(p.children);
+    }
+    for (int i=maxIdx+1;i<points.size();i++){
+        if (!(children.contains(points.get(i)))){
+            //remove it from tailset if it is in childrenset
+            tailSet.add(points.get(i));
+        }
+    }
+    return tailSet;
+}
+\end{lstlisting}
+
+\subsection{UWise+}
+UWise+在UWise基础上增加两个新的剪枝方法：Unit Group Reordering和Subset pruning。
+
+\subsubsection{Unit Group Reordering}
+因为Superset pruning对削减candidate group很有效，所以希望重新排列unit group来增强Superset pruning的效果，即先处理大的candidate group；所以按照点的检索倒序排列，即把高层的skyline layer的点排在前面。\\
+此时我们还需要修改tailset，因为原来的子节点在重新排序后变成了父节点。\\
+
+\begin{lstlisting}[language=C]
+private List<DataPoint> get_reverse_points(List<DataPoint> points){//unit group reordering
+    List<DataPoint> reversePoints=new ArrayList<DataPoint>();
+    for (int i=points.size()-1;i>=0;i--){
+        reversePoints.add(points.get(i));
+    }
+    return  reversePoints;
+}
+\end{lstlisting}
+
+\subsubsection{Subset pruning}
+
+如果一个candidate group $G_{i}$加上所有的tailset元素，即得到它子树中最深的子节点$G_{i}^{last}$，$G_{i}^{last}$的元素个数都不能达到k，则剪掉$G_{i}$，不去计算它的子树。
+\begin{lstlisting}[language=C]
+int gLast=get_last_deepest_candidate_group(p,points);
+if(gLast<k){
+    continue;
+    }else if (gLast==k){
+    Set<DataPoint> candidate=new HashSet<>(points.subList(0,points.indexOf(p)+1));
+    result.add(candidate);
+    continue;
+}
+\end{lstlisting}
 
 \section{实验与评估}
 \subsection{数据集}
@@ -82,10 +164,10 @@ DSG构建的时间与DSG的层数呈现正相关。\\
 验证corr 8与anti 4数据集时，本Java实现需要耗费的内存大于6G，产生了严重的GC开销，最终难以计算出正确结果。优化本算法与程序实现的内存占用也是我们后续的一个优化方向。
 
 \section{总结与下一步工作}
-数据集带来的。。。
-内存
-效率
-其他创新
+\begin{enumerate}
+	\item 高内存占用提出有效使用内存的算法或是程序实现，在我们的测试机器上防止因为内存占用而引发的高耗时。
+	\item 在某些数据集上，例如corr 2的层数和DSG构建时间超长，提出更加高效构建DSG的算法。DSG是后续算法的依赖，并且DSG描述了多维数据间的复杂关系，可用于其他的问题和算法。
+\end{enumerate}
 
 \section{分工说明与感谢}
 首先感谢组内同学，感谢助教查看与评估本实验报告。\\
