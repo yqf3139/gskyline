@@ -57,7 +57,7 @@ public class Main {
                 long start = System.currentTimeMillis();
                 DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, k);
                 long time = System.currentTimeMillis() - start;
-                System.out.printf("%s, %d, %d, %d\n", filename, k, time, graph.layers.size());
+//                System.out.printf("%s, %d, %d, %d\n", filename, k, time, graph.layers.size());
             }
         }
 
@@ -68,10 +68,11 @@ public class Main {
         if (dataset == null) {
             return;
         }
-        System.out.println("=== Filename: " + filename + " ===");
+//        System.out.println("=== Filename: " + filename + " ===");
+        System.out.print(filename + ",");
 
         DirectedSkylineGraph graph = DirectedSkylineGraph.createFrom(dataset, K);
-        System.out.println("Layers size : " + graph.layers.size());
+//        System.out.println("Layers size : " + graph.layers.size());
 
 //        List<int[]> ans = new LinkedList<>();
         for (String name : services.keySet()) {
