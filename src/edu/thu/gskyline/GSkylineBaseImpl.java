@@ -17,7 +17,6 @@ public class GSkylineBaseImpl implements GSkylineService {
         long start = System.currentTimeMillis();
         preproccess(graph, k, points, skyline, result);
         long end = System.currentTimeMillis();
-//        System.out.printf("%d,%d\n", k, end - start);
 
         // brute force method is too slow for such input
         if (points.size() > 80) return null;
@@ -70,6 +69,7 @@ public class GSkylineBaseImpl implements GSkylineService {
     protected void preproccess(
             DirectedSkylineGraph graph, int k,
             List<DataPoint> points, List<DataPoint> skyline, List<Set<DataPoint>> result) {
+        int counter = 0;
         for (Layer l : graph.layers) {
             for (DataPoint p : l.points) {
                 if (p.layerIdx == 0) {
@@ -84,6 +84,7 @@ public class GSkylineBaseImpl implements GSkylineService {
                     result.add(s);
                     continue;
                 }
+                p.idx = counter++;
                 points.add(p);
             }
         }

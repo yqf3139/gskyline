@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.9.28)  2 NOV 2016 22:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.9.28)  3 NOV 2016 17:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -341,19 +341,7 @@ File: c70gbsn.fd 2008/10/03 4.8.1
 (/usr/share/texmf/tex/latex/CJK/UTF8/c70gbsn.fdx
 File: c70gbsn.fdx 2012/05/07 4.8.3
 )
-Overfull \hbox (39.35045pt too wide) in paragraph at lines 19--26
-\C70/gbsn/m/n/10/7a  \C70/gbsn/bx/n/10/5e è \C70/gbsn/m/n/10/5b û \C70/gbsn/m/
-n/10/73 ∞ \C70/gbsn/m/n/10/ff ^^Z \C70/gbsn/m/n/10/8f ì \C70/gbsn/bx/n/10/51 e 
-\C70/gbsn/m/n/10/59 ^^Z \C70/gbsn/m/n/10/7e Ù \C70/gbsn/bx/n/10/70 π \C70/gbsn/
-bx/n/10/76 Ñ \C70/gbsn/m/n/10/96 ∆ \C70/gbsn/m/n/10/54 ^^H å \C70/gbsn/m/n/10/5
-c B \C70/gbsn/m/n/10/65 p\OT1/cmr/m/n/10 k\C70/gbsn/m/n/10/ff ^^L \C70/gbsn/m/n
-/10/8f ì \C70/gbsn/bx/n/10/51 ˙ \C70/gbsn/m/n/10/4e ^^@ *\OT1/cmr/m/n/10 k\C70/
-gbsn/m/n/10/5c B \C70/gbsn/bx/n/10/76 Ñ\OT1/cmr/m/n/10 DSG\C70/gbsn/m/n/10/30 ^
-^B$\OML/cmm/m/it/10 DirectedSkylineGraph$\C70/gbsn/bx/n/10/7c {
- []
-
-
-Overfull \hbox (5.00018pt too wide) in paragraph at lines 19--26
+Overfull \hbox (5.00018pt too wide) in paragraph at lines 19--28
 \C70/gbsn/m/n/10/5c B\OT1/cmr/m/n/10 Dominate\C70/gbsn/bx/n/10/5e v \C70/gbsn/m
 /n/10/4e ^^T\OT1/cmr/m/n/10 DSG\C70/gbsn/bx/n/10/67 * \C70/gbsn/m/n/10/8f æ \C7
 0/gbsn/m/n/10/52 0\OT1/cmr/m/n/10 k\C70/gbsn/m/n/10/5c B \C70/gbsn/m/n/10/ff ^^
@@ -374,27 +362,27 @@ File: lstlang1.sty 2013/08/26 1.5b listings language file
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
 )
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 47.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 48.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 47.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 48.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 48.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 49.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 48.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 49.
  [2]
-Overfull \hbox (15.00366pt too wide) in paragraph at lines 75--76
+Overfull \hbox (15.00366pt too wide) in paragraph at lines 76--77
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (9.62535pt too wide) in paragraph at lines 84--85
+Overfull \hbox (9.62535pt too wide) in paragraph at lines 85--86
 \OT1/cmr/m/n/10 UWise+\C70/gbsn/m/n/10/57 (\OT1/cmr/m/n/10 UWise\C70/gbsn/m/n/1
 0/57 ˙ \C70/gbsn/m/n/10/78 @ \C70/gbsn/bx/n/10/4e 
  \C70/gbsn/m/n/10/58 û \C70/gbsn/bx/n/10/52 † \C70/gbsn/bx/n/10/4e $ * \C70/gbs
@@ -404,39 +392,29 @@ cmr/m/n/10 Unit Group Re-order-ing\C70/gbsn/m/n/10/54 å\OT1/cmr/m/n/10 Subset
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--89
+Underfull \hbox (badness 10000) in paragraph at lines 88--90
 
- []
-
-
-Overfull \hbox (195.0055pt too wide) in paragraph at lines 91--92
-[][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (21.00372pt too wide) in paragraph at lines 92--93
-[][][][][][][][][][][][][][][][] 
  []
 
 [3]
-Overfull \hbox (147.005pt too wide) in paragraph at lines 108--109
-[][][][][][][][][][][][][][][][][][][][][][][][] 
+Overfull \hbox (27.00378pt too wide) in paragraph at lines 100--101
+[][][][][][][][][][][][][][][][][][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 119--120
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
 
  []
 
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 125.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 117.
 
-Underfull \hbox (badness 10000) in paragraph at lines 128--130
+Underfull \hbox (badness 10000) in paragraph at lines 120--122
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 141--142
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
 
  []
 
@@ -444,14 +422,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 141--142
 File: pics/k_layer_size.png Graphic file (type png)
 
 <use pics/k_layer_size.png>
-Package pdftex.def Info: pics/k_layer_size.png used on input line 143.
+Package pdftex.def Info: pics/k_layer_size.png used on input line 135.
 (pdftex.def)             Requested size: 281.848pt x 237.0414pt.
 
 <pics/k_layer_time.png, id=92, 717.6411pt x 592.614pt>
 File: pics/k_layer_time.png Graphic file (type png)
 
 <use pics/k_layer_time.png>
-Package pdftex.def Info: pics/k_layer_time.png used on input line 145.
+Package pdftex.def Info: pics/k_layer_time.png used on input line 137.
 (pdftex.def)             Requested size: 287.05135pt x 237.0414pt.
 
 <pics/max_layer_building_time.png, id=93, 769.6755pt x 592.614pt>
@@ -459,16 +437,16 @@ File: pics/max_layer_building_time.png Graphic file (type png)
 
 <use pics/max_layer_building_time.png>
 Package pdftex.def Info: pics/max_layer_building_time.png used on input line 14
-9.
+1.
 (pdftex.def)             Requested size: 307.86475pt x 237.0414pt.
 
 <pics/prefilter.png, id=94, 696.6828pt x 583.9416pt>
 File: pics/prefilter.png Graphic file (type png)
  <use pics/prefilter.png>
-Package pdftex.def Info: pics/prefilter.png used on input line 153.
+Package pdftex.def Info: pics/prefilter.png used on input line 145.
 (pdftex.def)             Requested size: 278.66818pt x 233.5725pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--156
+Underfull \hbox (badness 10000) in paragraph at lines 135--148
 
  []
 
@@ -479,10 +457,10 @@ File: pics/eval_4_algo_on_multi_dataset.png Graphic file (type png)
 
 <use pics/eval_4_algo_on_multi_dataset.png>
 Package pdftex.def Info: pics/eval_4_algo_on_multi_dataset.png used on input li
-ne 158.
+ne 150.
 (pdftex.def)             Requested size: 283.58246pt x 237.90863pt.
 
-Overfull \hbox (26.33353pt too wide) in paragraph at lines 158--165
+Overfull \hbox (26.33353pt too wide) in paragraph at lines 150--157
 \C70/gbsn/bx/n/10/52 + \C70/gbsn/m/n/10/58 û \C70/gbsn/m/n/10/95 ^^? \C70/gbsn/
 m/n/10/30 ^^B \C70/gbsn/m/n/10/57 (\OT1/cmr/m/n/10 k=4\C70/gbsn/bx/n/10/65 ˆ \C
 70/gbsn/bx/n/10/ff ^^L\OT1/cmr/m/n/10 uwise+\C70/gbsn/bx/n/10/4e ^^N\OT1/cmr/m/
@@ -495,19 +473,19 @@ ne\C70/gbsn/m/n/10/5d Ú
  []
 
 [7 <./pics/prefilter.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 173--178
+Underfull \hbox (badness 10000) in paragraph at lines 165--170
 
  []
 
 [8 <./pics/eval_4_algo_on_multi_dataset.png>] [9] (./report1.aux) ) 
 Here is how much of TeX's memory you used:
- 6015 strings out of 494724
- 84088 string characters out of 6174697
+ 6008 strings out of 494724
+ 83967 string characters out of 6174697
  182868 words of memory out of 5000000
- 9218 multiletter control sequences out of 15000+600000
+ 9211 multiletter control sequences out of 15000+600000
  38881 words of font info for 140 fonts, out of 8000000 for 9000
  102 hyphenation exceptions out of 8191
- 38i,6n,51p,755b,1770s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,6n,51p,757b,1770s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/
 texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texm
@@ -566,7 +544,7 @@ e/texmf/fonts/type1/arphic/gbsnu/gbsnu97.pfb></usr/share/texmf/fonts/type1/arph
 ic/gbsnu/gbsnu98.pfb></usr/share/texmf/fonts/type1/arphic/gbsnu/gbsnu99.pfb></u
 sr/share/texmf/fonts/type1/arphic/gbsnu/gbsnu9a.pfb></usr/share/texmf/fonts/typ
 e1/arphic/gbsnu/gbsnuff.pfb>
-Output written on report1.pdf (9 pages, 637598 bytes).
+Output written on report1.pdf (9 pages, 636653 bytes).
 PDF statistics:
  359 PDF objects out of 1000 (max. 8388607)
  257 compressed objects within 3 object streams

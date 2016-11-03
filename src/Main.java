@@ -10,8 +10,8 @@ public class Main {
     static {
         serviceMap.put("baseline", new GSkylineBaseImpl());
         serviceMap.put("pwise", new GSkylinePointWiseImpl());
-        serviceMap.put("uwise", new UWise());
-        serviceMap.put("uwise+", new UWisePlus());
+        serviceMap.put("uwise", new GSkylineUnitWiseImpl());
+        serviceMap.put("uwise+", new GSkylineUnitWisePlusImpl());
     }
 
     public static void main(String[] args) {
