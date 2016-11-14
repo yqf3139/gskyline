@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.9.28)  3 NOV 2016 17:03
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.9.28)  3 NOV 2016 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -479,10 +479,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 165--170
 
 [8 <./pics/eval_4_algo_on_multi_dataset.png>] [9] (./report1.aux) ) 
 Here is how much of TeX's memory you used:
- 6008 strings out of 494724
- 83967 string characters out of 6174697
+ 6010 strings out of 494724
+ 83987 string characters out of 6174697
  182868 words of memory out of 5000000
- 9211 multiletter control sequences out of 15000+600000
+ 9213 multiletter control sequences out of 15000+600000
  38881 words of font info for 140 fonts, out of 8000000 for 9000
  102 hyphenation exceptions out of 8191
  38i,6n,51p,757b,1770s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -544,7 +544,7 @@ e/texmf/fonts/type1/arphic/gbsnu/gbsnu97.pfb></usr/share/texmf/fonts/type1/arph
 ic/gbsnu/gbsnu98.pfb></usr/share/texmf/fonts/type1/arphic/gbsnu/gbsnu99.pfb></u
 sr/share/texmf/fonts/type1/arphic/gbsnu/gbsnu9a.pfb></usr/share/texmf/fonts/typ
 e1/arphic/gbsnu/gbsnuff.pfb>
-Output written on report1.pdf (9 pages, 636653 bytes).
+Output written on report1.pdf (9 pages, 636672 bytes).
 PDF statistics:
  359 PDF objects out of 1000 (max. 8388607)
  257 compressed objects within 3 object streams

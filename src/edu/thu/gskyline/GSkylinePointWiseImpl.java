@@ -25,9 +25,7 @@ public class GSkylinePointWiseImpl implements GSkylineService {
         root.tailset = new Dataset();
         root.tailset.points = new ArrayList<>();
         for (Layer l : graph.layers) {
-            for (DataPoint p : l.points) {
-                root.tailset.points.add(p);
-            }
+            root.tailset.points.addAll(l.points);
         }
 
         List<PDataNode> tepGkl = new ArrayList<>();
