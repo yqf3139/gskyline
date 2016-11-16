@@ -12,8 +12,9 @@ public class Main {
         serviceMap.put("pwise", new GSkylinePointWiseImpl());
         serviceMap.put("uwise", new GSkylineUnitWiseImpl());
         serviceMap.put("uwise+", new GSkylineUnitWisePlusImpl());
+        serviceMap.put("uwise+2", new GskylineUnitWisePlus2Impl());
     }
-
+    
     public static void main(String[] args) {
         // testBuildGraph(args);
         // if (true)return;
