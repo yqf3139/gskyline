@@ -10,6 +10,9 @@ public class DataPoint {
     public List<DataPoint> parents = new LinkedList<>();
     public List<DataPoint> children = new LinkedList<>();
     public double[] data;
+    
+    public int layeridx = -1;
+    public int layernum = -1;
 
     public boolean dominate(DataPoint other) {
         double[] a = data;
