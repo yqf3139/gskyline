@@ -26,7 +26,7 @@ public class GskylineUnitWisePlus2Impl extends GSkylineUnitWiseImpl {
             if (gLast < k) {
                 continue;
             } else if (gLast == k) {
-                Set<DataPoint> candidate = new HashSet<>(points.subList(0, points.indexOf(p) + 1));
+                Set<DataPoint> candidate = new HashSet<>(points.subList(0, p.idx + 1));
                 result.add(candidate);
                 continue;
             }
@@ -60,14 +60,15 @@ public class GskylineUnitWisePlus2Impl extends GSkylineUnitWiseImpl {
     }
 
     private int get_last_deepest_candidate_group(DataPoint point, List<DataPoint> points) {
-        return points.indexOf(point) + 1;
+        return point.idx + 1;
     }
 
     protected HashSet<DataPoint> get_tail_Set2(Set<DataPoint> set, List<DataPoint> points,int k) {
         HashSet<DataPoint> children = new HashSet<>();
         int maxIdx = -1;
+        int reversePointsSize=points.size();
         for (DataPoint p : set) {
-            int idx = points.indexOf(p);
+            int idx = reversePointsSize-1-p.idx;
             if (idx > maxIdx) {
                 maxIdx = idx;
             }
@@ -77,9 +78,12 @@ public class GskylineUnitWisePlus2Impl extends GSkylineUnitWiseImpl {
         temp.addAll(points);
         HashSet<DataPoint> tailSet = new HashSet<>(temp.subList(maxIdx+1,temp.size()));
         tailSet.removeAll(children);
+
+        int tailSize=k-set.size();
         for (DataPoint p:tailSet){
-            if (p.parents.size()>k-2){
+            if (p.parents.size()>tailSize){
                 tailSet.remove(p);
+                System.out.print("hi");
             }
         }
         return tailSet;
