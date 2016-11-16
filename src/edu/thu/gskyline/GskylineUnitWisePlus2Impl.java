@@ -83,7 +83,6 @@ public class GskylineUnitWisePlus2Impl extends GSkylineUnitWiseImpl {
         for (DataPoint p:tailSet){
             if (p.parents.size()>tailSize){
                 tailSet.remove(p);
-                System.out.print("hi");
             }
         }
         return tailSet;

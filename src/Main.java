@@ -14,46 +14,38 @@ public class Main {
         serviceMap.put("uwise+", new GSkylineUnitWisePlusImpl());
         serviceMap.put("uwise+2", new GskylineUnitWisePlus2Impl());
     }
+
     public static void main(String[] args) {
-        Map<String, GSkylineService> services = new HashMap<>();
-        services.put("uwise+", serviceMap.get("uwise+"));
-        services.put("uwise+2", serviceMap.get("uwise+2"));
+        // testBuildGraph(args);
+        // if (true)return;
+        if (args.length < 3) {
+            System.out.println("usage: java -jar gskyline.jar method K dataset dir or file ...");
+            System.out.println("method: all baseline pwise uwise uwise+");
+            System.exit(-1);
+        }
+
+        Map<String, GSkylineService> services = null;
+        if ("all".equals(args[0])) {
+            services = serviceMap;
+        } else if (serviceMap.containsKey(args[0])) {
+            services = new HashMap<>();
+            services.put(args[0], serviceMap.get(args[0]));
+        } else {
+            System.err.println("please provide a valid method");
+            System.exit(-2);
+        }
+
         int k = 4;
-        runTestCase(services, 4, "datasets/corr_4.txt");
+        try {
+            k = Integer.parseInt(args[1]);
+        } catch (Exception ignored) {
+        }
 
+        System.out.println("Using K: " + k);
+        for (int i = 2; i < args.length; i++) {
+            runTestCase(services, k, args[i]);
+        }
     }
-
-//    public static void main(String[] args) {
-//        // testBuildGraph(args);
-//        // if (true)return;
-//        if (args.length < 3) {
-//            System.out.println("usage: java -jar gskyline.jar method K dataset dir or file ...");
-//            System.out.println("method: all baseline pwise uwise uwise+");
-//            System.exit(-1);
-//        }
-//
-//        Map<String, GSkylineService> services = null;
-//        if ("all".equals(args[0])) {
-//            services = serviceMap;
-//        } else if (serviceMap.containsKey(args[0])) {
-//            services = new HashMap<>();
-//            services.put(args[0], serviceMap.get(args[0]));
-//        } else {
-//            System.err.println("please provide a valid method");
-//            System.exit(-2);
-//        }
-//
-//        int k = 4;
-//        try {
-//            k = Integer.parseInt(args[1]);
-//        } catch (Exception ignored) {
-//        }
-//
-//        System.out.println("Using K: " + k);
-//        for (int i = 2; i < args.length; i++) {
-//            runTestCase(services, k, args[i]);
-//        }
-//    }
 
     private static void testBuildGraph(String[] filenames) {
         System.out.printf("dataset, k, time, layersize\n");
